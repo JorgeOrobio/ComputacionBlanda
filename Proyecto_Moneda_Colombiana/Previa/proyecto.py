@@ -78,10 +78,10 @@ print(y)
 # #Definicion de variables
 #-----------------------------------------------------------------
 #La cantidad de años que se tiene en el dataset
-intervalo_tiempo = 34
+intervalo_tiempo = int(34 / 2)
 #Los distinto rangos temporales que se van a usar para visualizar los 
 #datos
-conversion_temporal = 52
+conversion_temporal = 52 * 2
 #Valor el cual se espera predecir con el dataset
 prediccion = 5000
 
@@ -154,7 +154,7 @@ def plot_models(x, y, models, fname, mx=None, ymax=None, xmin=None):
     # 4, lo cual constituye las semanas analizadas
     plt.xticks(
         [w  * conversion_temporal for w in range(intervalo_tiempo)],
-        ['A\n %i' % w for w in range(intervalo_tiempo)])
+        ['A\n' +str(int(w*2+1990)) for w in range(intervalo_tiempo)])
 
     # Aquí se evalúa el tipo de modelo recibido
     # Si no se envía ninguno, no se dibuja ninguna curva de ajuste
@@ -225,6 +225,7 @@ print("Error del modelo fp2:", res2)
 f2 = sp.poly1d(fp2)
 #En la función polyfit se crea un listado con los coeficientes del polinomio de orden n  en este de grado 3
 f3 = sp.poly1d(np.polyfit(x, y, 3))
+f5 = sp.poly1d(np.polyfit(x, y, 5))
 f10 = sp.poly1d(np.polyfit(x, y, 10))
 f100 = sp.poly1d(np.polyfit(x, y, 70))
 
@@ -268,11 +269,11 @@ def error(f, x, y):
 # -----------------------------------------------------------------
 #MUESTRA EL ERROR DEFINIDO ANTERIORMENTE PARA CADA ORDEN
 print("Errores para el conjunto completo de datos:")
-for f in [f1, f2, f3, f10, f100]:
+for f in [f1, f2, f3,f5, f10]:
     print("Error d=%i: %f" % (f.order, error(f, x, y)))
 
 print("Errores solamente después del punto de inflexión")
-for f in [f1, f2, f3, f10, f100]:
+for f in [f1, f2, f3,f5, f10]:
     print("Error d=%i: %f" % (f.order, error(f, xb, yb)))
 
 print("Error de inflexión=%f" % (error(fa, xa, ya) + error(fb, xb, yb)))
@@ -280,7 +281,7 @@ print("Error de inflexión=%f" % (error(fa, xa, ya) + error(fb, xb, yb)))
 # Se extrapola de modo que se proyecten respuestas en el futuro
 # -----------------------------------------------------------------
 plot_models(
-    x, y, [f1, f2, f3, f10, f100],
+    x, y, [f3,f5, f10],
     os.path.join(CHART_DIR, "1400_01_06.png"),
     mx=np.linspace(0 *conversion_temporal, intervalo_tiempo * conversion_temporal , 100),
     ymax=prediccion, xmin=0 * conversion_temporal)
@@ -297,17 +298,18 @@ print("Entrenamiento de datos únicamente despúes del punto de inflexión")
 fb1 = fb
 fb2 = sp.poly1d(np.polyfit(xb, yb, 2))
 fb3 = sp.poly1d(np.polyfit(xb, yb, 3))
+fb5 = sp.poly1d(np.polyfit(xb, yb, 5))
 fb10 = sp.poly1d(np.polyfit(xb, yb, 10))
 fb100 = sp.poly1d(np.polyfit(xb, yb, 70))
 
 print("Errores después del punto de inflexión")
-for f in [fb1, fb2, fb3, fb10, fb100]:
+for f in [fb1, fb2, fb3,fb5, fb10]:
     print("Error d=%i: %f" % (f.order, error(f, xb, yb)))
 
 # Gráficas después del punto de inflexión
 # -----------------------------------------------------------------
 plot_models(
-    x, y, [fb1, fb2, fb3, fb10, fb100],
+    x, y, [fb3,fb5, fb10],
     os.path.join(CHART_DIR, "1400_01_07.png"),
     mx=np.linspace(0 * conversion_temporal, intervalo_tiempo*conversion_temporal, 100),
     ymax=prediccion, xmin=0 * conversion_temporal)
@@ -338,6 +340,7 @@ print("fbt2(x)= \n%s" % fbt2)
 print("fbt2(x)-100,000= \n%s" % (fbt2-prediccion))
 
 fbt3 = sp.poly1d(np.polyfit(xb[train], yb[train], 3))
+fbt5 = sp.poly1d(np.polyfit(xb[train], yb[train], 5))
 fbt10 = sp.poly1d(np.polyfit(xb[train], yb[train], 10))
 fbt100 = sp.poly1d(np.polyfit(xb[train], yb[train], 70))
 
@@ -347,7 +350,7 @@ for f in [fbt1, fbt2, fbt3, fbt10, fbt100]:
     print("Error d=%i: %f" % (f.order, error(f, xb[test], yb[test])))
 
 plot_models(
-    x, y, [fbt1, fbt2, fbt3, fbt10, fbt100],
+    x, y, [fbt3, fbt5, fbt10],
     os.path.join(CHART_DIR, "1400_01_08.png"),
     mx=np.linspace(0 *conversion_temporal, intervalo_tiempo*conversion_temporal, 100),
     ymax=prediccion, xmin=0 *conversion_temporal)
@@ -366,8 +369,8 @@ print(fbt2 - prediccion)
 #x0 es un parametro fijo que dice el valor desde donde se empieza el análisis
 #como fsolve da el valor en horas se debe convertir a semanas y se guarda en
 #la variable alcanzado_max
-alcanzado_max = fsolve(fbt2 - prediccion, x0=800) / (conversion_temporal)
+alcanzado_max = fsolve(fbt5 - prediccion, x0=2000) / (conversion_temporal)
 #Se imprime la semana en que se llegará a 100.000
-ano = alcanzado_max[0]+1989
+ano = alcanzado_max[0] * 2 +1990
 print("\nLa moneda alcanzará el valor de conversion de "+ str(prediccion) + " en el año %f" %
       ano)
