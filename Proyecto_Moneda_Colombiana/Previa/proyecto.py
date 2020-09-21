@@ -369,7 +369,7 @@ print(fbt2 - prediccion)
 #x0 es un parametro fijo que dice el valor desde donde se empieza el análisis
 #como fsolve da el valor en horas se debe convertir a semanas y se guarda en
 #la variable alcanzado_max
-alcanzado_max = fsolve(fbt5 - prediccion, x0=2000) / (conversion_temporal)
+alcanzado_max = fsolve(fbt5 - prediccion, x0=1610) / (conversion_temporal)
 #Se imprime la semana en que se llegará a 100.000
 ano = alcanzado_max[0] * 2 +1990
 print("\nLa moneda alcanzará el valor de conversion de "+ str(prediccion) + " en el año %f" %
