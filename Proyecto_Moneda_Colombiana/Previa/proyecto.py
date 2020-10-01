@@ -283,8 +283,8 @@ print("Error de inflexión=%f" % (error(fa, xa, ya) + error(fb, xb, yb)))
 plot_models(
     x, y, [f3,f5, f10],
     os.path.join(CHART_DIR, "1400_01_06.png"),
-    mx=np.linspace(0 *conversion_temporal, intervalo_tiempo * conversion_temporal , 100),
-    ymax=prediccion, xmin=0 * conversion_temporal)
+    mx=np.linspace(0 *conversion_temporal, (intervalo_tiempo + 4) * conversion_temporal , 100),
+    ymax=prediccion + 3000, xmin=0 * conversion_temporal)
 
 # ---------------------------------------------------------------
 
@@ -311,8 +311,8 @@ for f in [fb1, fb2, fb3,fb5, fb10]:
 plot_models(
     x, y, [fb3,fb5, fb10],
     os.path.join(CHART_DIR, "1400_01_07.png"),
-    mx=np.linspace(0 * conversion_temporal, intervalo_tiempo*conversion_temporal, 100),
-    ymax=prediccion, xmin=0 * conversion_temporal)
+    mx=np.linspace(0 * conversion_temporal, (intervalo_tiempo+4)*conversion_temporal, 100),
+    ymax=prediccion + 3000 , xmin=0 * conversion_temporal)
 
 # Separa el entrenamiento de los datos de prueba
 # -----------------------------------------------------------------
@@ -352,8 +352,8 @@ for f in [fbt1, fbt2, fbt3, fbt10, fbt100]:
 plot_models(
     x, y, [fbt3, fbt5, fbt10],
     os.path.join(CHART_DIR, "1400_01_08.png"),
-    mx=np.linspace(0 *conversion_temporal, intervalo_tiempo*conversion_temporal, 100),
-    ymax=prediccion, xmin=0 *conversion_temporal)
+    mx=np.linspace(0 *conversion_temporal, (intervalo_tiempo+4)*conversion_temporal, 100),
+    ymax=prediccion + 3000 , xmin=0 *conversion_temporal)
 #Se resuellve para la función de grado 2
 #-----------------------------------------------------------
 #Se importa la función fsolve que se encarga
@@ -369,7 +369,7 @@ print(fbt2 - prediccion)
 #x0 es un parametro fijo que dice el valor desde donde se empieza el análisis
 #como fsolve da el valor en horas se debe convertir a semanas y se guarda en
 #la variable alcanzado_max
-alcanzado_max = fsolve(fbt5 - prediccion, x0=1610) / (conversion_temporal)
+alcanzado_max = fsolve(fbt10 - prediccion, x0=2000) / (conversion_temporal)
 #Se imprime la semana en que se llegará a 100.000
 ano = alcanzado_max[0] * 2 +1990
 print("\nLa moneda alcanzará el valor de conversion de "+ str(prediccion) + " en el año %f" %
