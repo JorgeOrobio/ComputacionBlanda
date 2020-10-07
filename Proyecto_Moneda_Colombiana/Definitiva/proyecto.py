@@ -19,7 +19,7 @@ y = data[:, 1]
 print("Número de entradas incorrectas:", np.sum(np.isnan(y)))
 print(x)
 print(y)
-intervalo_tiempo = int(34 / 2)
+intervalo_tiempo = int(30 / 2)
 conversion_temporal = 52 * 2
 prediccion = 5000
 
@@ -38,8 +38,8 @@ def plot_models(x, y, models, fname, mx=None, ymax=None, xmin=None):
     plt.ylabel("Tasa de intercambio COP a USD")
 
     plt.xticks(
-        [w  * conversion_temporal for w in range(intervalo_tiempo + 10)],
-        ['A\n' +str(int(w*2+1990)) for w in range(intervalo_tiempo + 10)])
+        [w  * conversion_temporal for w in range(intervalo_tiempo+2)],
+        ['A\n' +str(int(w*2+1990)) for w in range(intervalo_tiempo+2)])
 
     if models:
         if mx is None:
@@ -101,8 +101,8 @@ print("Error de inflexión=%f" % (error(fa, xa, ya) + error(fb, xb, yb)))
 plot_models(
     x, y, [f3,f5, f10],
     os.path.join(CHART_DIR, "1400_01_06.png"),
-    mx=np.linspace(0 *conversion_temporal, (intervalo_tiempo + 4) * conversion_temporal , 100),
-    ymax=prediccion + 3000, xmin=0 * conversion_temporal)
+    mx=np.linspace(0 *conversion_temporal, (intervalo_tiempo + 2) * conversion_temporal , 100),
+    ymax=prediccion + 2000, xmin=0 * conversion_temporal)
 
 
 print("Entrenamiento de datos únicamente despúes del punto de inflexión")
@@ -120,8 +120,8 @@ for f in [fb1, fb2, fb3,fb5, fb10]:
 plot_models(
     x, y, [fb3,fb5, fb10],
     os.path.join(CHART_DIR, "1400_01_07.png"),
-    mx=np.linspace(0 * conversion_temporal, (intervalo_tiempo+4)*conversion_temporal, 100),
-    ymax=prediccion + 3000 , xmin=0 * conversion_temporal)
+    mx=np.linspace(0 * conversion_temporal, (intervalo_tiempo+2)*conversion_temporal, 100),
+    ymax=prediccion + 2000 , xmin=0 * conversion_temporal)
 
 frac = 0.3
 split_idx = int(frac * len(xb))
@@ -144,8 +144,8 @@ for f in [fbt1, fbt2, fbt3, fbt10, fbt100]:
 plot_models(
     x, y, [fbt3, fbt5, fbt10],
     os.path.join(CHART_DIR, "1400_01_08.png"),
-    mx=np.linspace(0 *conversion_temporal, (intervalo_tiempo+4)*conversion_temporal, 100),
-    ymax=prediccion + 3000 , xmin=0 *conversion_temporal)
+    mx=np.linspace(0 *conversion_temporal, (intervalo_tiempo+2)*conversion_temporal, 100),
+    ymax=prediccion + 2000 , xmin=0 *conversion_temporal)
 from scipy.optimize import fsolve
 print(fbt2)
 print(fbt2 - prediccion)
